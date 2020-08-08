@@ -1,7 +1,6 @@
-package mcli.test;
+package mcli.example;
 
 import mcli.view.component.View;
-import mcli.view.model.Binding;
 
 public class AccountView extends View {
 

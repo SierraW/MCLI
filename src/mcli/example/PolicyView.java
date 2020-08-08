@@ -1,4 +1,4 @@
-package mcli.test;
+package mcli.example;
 
 import mcli.view.component.View;
 

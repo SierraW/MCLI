@@ -1,7 +1,5 @@
-package mcli.test;
+package mcli.example;
 
-import mcli.view.component.Environment;
-import mcli.view.component.ProgressBar;
 import mcli.view.component.TextField;
 import mcli.view.component.View;
 
@@ -20,9 +18,7 @@ public class LoginView extends View {
                     return TextField.validate(comm, TextField.STR_REGEX);
                 })
                 .addQuestion("Please enter your password (b to go back):", TextField.STR_REGEX)
-                .onSuccess((input) -> {
-                    redirect(new AccountView(input[0]));
-                })
+                .onSuccess((input) -> redirect(new AccountView(input[0])))
                 .showProgressBar(true);
     }
 }
