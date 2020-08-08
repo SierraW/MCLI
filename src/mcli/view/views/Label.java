@@ -1,16 +1,19 @@
 package mcli.view.views;
 
+import mcli.view.model.Describable;
+
 public class Label extends View {
 
     private String text;
+    private Describable describable;
 
     public Label(String text) {
-        this.text = text;
+        if (text != null)
+            this.text = text;
     }
 
-    @Override
-    boolean isDisplayOnlyView() {
-        return true;
+    public Label(Describable stringBinding) {
+        this.describable = stringBinding;
     }
 
     @Override
@@ -19,8 +22,10 @@ public class Label extends View {
     }
 
     @Override
-    boolean show(String comm) {
-        System.out.println(text);
-        return false;
+    void show() {
+        if (describable != null)
+            System.out.println(describable.describe());
+        if (text != null)
+            System.out.println(text);
     }
 }

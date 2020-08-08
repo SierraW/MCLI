@@ -1,9 +1,8 @@
 package mcli.test;
 
-import mcli.view.views.Environment;
+import mcli.view.controller.RootViewController;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Test {

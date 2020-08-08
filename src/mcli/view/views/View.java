@@ -1,22 +1,26 @@
 package mcli.view.views;
 
+import mcli.view.model.Describable;
 import mcli.view.model.Function;
 import mcli.view.model.StateFunction;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public abstract class View implements StateFunction {
 
-    private final ArrayList<View> views = new ArrayList<>();
-    private final ArrayList<View> inputViews = new ArrayList<>();
-    public final ArrayList<String> input = new ArrayList<>();
-
-    boolean isDisplayOnlyView() {
-        return true;
-    }
+    private ArrayList<View> views = new ArrayList<>();
 
     public View() {
         view();
+    }
+
+    public ArrayList<View> getViews() {
+        return views;
+    }
+
+    public void setViews(ArrayList<View> views) {
+        this.views = views;
     }
 
     public abstract void view();
@@ -24,46 +28,59 @@ public abstract class View implements StateFunction {
     @Override
     public void run(String comm) {
         if (comm == null) {
-            for (View view : Environment.viewStack.top().views) {
-                view.show(null);
-            }
+            Environment.viewStack.top().show();
         } else {
-            for (View view : Environment.viewStack.top().inputViews) {
-                if (view.show(comm)) {
-                    break;
-                }
-            }
+            Environment.viewStack.top().read(comm);
         }
     }
 
-    boolean show(String comm) {
+    boolean read(String comm){
+        for(View view : views) {
+            if (view.read(comm)) {
+                return true;
+            }
+        }
         return false;
     }
 
-    private View addView(View view) {
-        if (view.isDisplayOnlyView()) {
-            views.add(view);
-        } else {
-            views.add(view);
-            inputViews.add(view);
+    void show() {
+        for(View view : views) {
+            view.show();
         }
+    }
+
+    private View addView(View view) {
+        views.add(view);
         return view;
     }
 
-    public void Label(String text) {
-        addView(new Label(text));
+    public Label Label(String text) {
+        return (Label) addView(new Label(text));
     }
 
-    public MultipleChoiceView MultipleChoiceView(String introduction) {
-        return (MultipleChoiceView) addView(new MultipleChoiceView(introduction));
+    public Label Label(Describable stringBinding) {
+        return (Label) addView(new Label(stringBinding));
     }
 
-    public ShortAnswerView ShortAnswerView(ArrayList<String> input, Function onSuccess) {
-        return (ShortAnswerView) addView(new ShortAnswerView(input, onSuccess));
+    public MultipleChoiceView MultipleChoiceView() {
+        return (MultipleChoiceView) addView(new MultipleChoiceView());
+    }
+
+    public ShortAnswerView ShortAnswerView(ShortAnswerView.ShortAnswerOnSuccess onSuccess) {
+        return (ShortAnswerView) addView(new ShortAnswerView(onSuccess));
+    }
+
+    public TextField TextField(String validationRegEx, StateFunction onFill) {
+        return (TextField) addView(new TextField(validationRegEx, onFill));
+    }
+
+    public SelectionField SelectionField(SelectionField.Selections selections, StateFunction onSelect) {
+        return (SelectionField) addView(new SelectionField(selections, onSelect));
     }
 
     public View View(View view) {
-        return addView(view);
+        addView(view);
+        return this;
     }
 
     public void redirect(View newView) {

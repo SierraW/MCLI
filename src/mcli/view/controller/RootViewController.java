@@ -1,13 +1,10 @@
-package mcli.test;
+package mcli.view.controller;
 
-import mcli.view.controller.ViewController;
-import mcli.view.model.Function;
 import mcli.view.views.Environment;
 import mcli.view.views.View;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class RootViewController {
     private final View rootView;

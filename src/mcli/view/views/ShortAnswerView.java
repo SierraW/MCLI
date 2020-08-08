@@ -6,15 +6,18 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class ShortAnswerView extends View {
-    private Function onSuccess;
+    private ShortAnswerOnSuccess onSuccess;
     private ArrayList<String> questions = new ArrayList<>();
     private ArrayList<String> validation = new ArrayList<>();
-    private ArrayList<String> input;
+    private ArrayList<String> input = new ArrayList<>();
     private String error;
 
-    public ShortAnswerView(ArrayList<String> input, Function onSuccess) {
+    public interface ShortAnswerOnSuccess {
+        void onSuccess(String[] input);
+    }
+
+    public ShortAnswerView(ShortAnswerOnSuccess onSuccess) {
         this.onSuccess = onSuccess;
-        this.input = input;
     }
 
     public ShortAnswerView addQuestion(String question, String validationRegEx) {
@@ -29,21 +32,12 @@ public class ShortAnswerView extends View {
     }
 
     @Override
-    boolean isDisplayOnlyView() {
-        return false;
-    }
-
-    @Override
     public void view() {
 
     }
 
     @Override
-    boolean show(String comm) {
-        if (comm == null) {
-            System.out.println(questions.get(input.size()));
-            return false;
-        }
+    public boolean read(String comm) {
         if (!validate(comm, validation.get(input.size()))) {
             if (error != null) {
                 System.out.println(error);
@@ -54,10 +48,15 @@ public class ShortAnswerView extends View {
             input.add(comm);
         }
         if (input.size() == questions.size()) {
-            onSuccess.apply();
+            onSuccess.onSuccess(input.toArray(new String[0]));
             input.clear();
         }
         return true;
+    }
+
+    @Override
+    void show() {
+        System.out.println(questions.get(input.size()));
     }
 
     private boolean validate(String input, String regEx) {

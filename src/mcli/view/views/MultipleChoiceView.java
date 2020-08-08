@@ -1,23 +1,20 @@
 package mcli.view.views;
 
-import mcli.view.model.CommandMap;
 import mcli.view.model.DescribableFunction;
 import mcli.view.model.Function;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class MultipleChoiceView extends View {
-
-    private final String prompt;
     private final ArrayList<String> keyList;
     private final HashMap<String, DescribableFunction> commandMap;
     private String error;
 
-    public MultipleChoiceView(String prompt) {
+    public MultipleChoiceView() {
         keyList = new ArrayList<>();
         commandMap = new HashMap<>();
-        this.prompt = prompt;
     }
 
     public MultipleChoiceView addQuestion(String choice, String question, Function onSubmit) {
@@ -42,36 +39,32 @@ public class MultipleChoiceView extends View {
     }
 
     @Override
-    boolean isDisplayOnlyView() {
-        return false;
-    }
-
-    @Override
     public void view() {
-
+        Label(this::getPrompt);
+        SelectionField(this::getKeySet, this::command);
     }
 
-    @Override
-    boolean show(String comm) {
-        if (comm == null) {
-            if (prompt != null) {
-                System.out.println(prompt);
-            }
+    void command(String comm) {
+        commandMap.get(comm).apply();
+    }
+
+    Set<String> getKeySet() {
+        return commandMap.keySet();
+    }
+
+    String getPrompt() {
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+        if (keyList != null)
             for (String key : keyList) {
                 DescribableFunction value = commandMap.get(key);
                 if (value.describe() != null)
-                    System.out.println(key + ": " +value.describe());
-            }
-            return false;
+                    if (isFirst) {
+                        sb.append(key).append(": ").append(value.describe());
+                        isFirst = false;
+                    } else
+                        sb.append("\n").append(key).append(": ").append(value.describe());
         }
-        if (!commandMap.containsKey(comm)) {
-            if (error != null) {
-                System.out.println(error);
-                return true;
-            }
-            return false;
-        }
-        commandMap.get(comm).apply();
-        return true;
+        return sb.toString();
     }
 }
