@@ -1,7 +1,7 @@
 package mcli.view.views;
 
 import mcli.view.component.View;
-import mcli.view.model.Describable;
+import mcli.view.model.Binding;
 import mcli.view.model.DescribableFunction;
 import mcli.view.model.Function;
 import mcli.view.model.InputValidation;
@@ -24,11 +24,11 @@ public class MultipleChoiceView extends View {
         return addQuestion(choice, () -> question, onSubmit);
     }
 
-    public MultipleChoiceView addQuestion(String choice, Describable describable, Function onSubmit) {
+    public MultipleChoiceView addQuestion(String choice, Binding<String> bindingString, Function onSubmit) {
         commandMap.put(choice, new DescribableFunction() {
             @Override
-            public String describe() {
-                return describable.describe();
+            public String value() {
+                return bindingString.value();
             }
 
             @Override
@@ -71,12 +71,12 @@ public class MultipleChoiceView extends View {
         if (keyList != null)
             for (String key : keyList) {
                 DescribableFunction value = commandMap.get(key);
-                if (value.describe() != null)
+                if (value.value() != null)
                     if (isFirst) {
-                        sb.append(key).append(": ").append(value.describe());
+                        sb.append(key).append(": ").append(value.value());
                         isFirst = false;
                     } else
-                        sb.append("\n").append(key).append(": ").append(value.describe());
+                        sb.append("\n").append(key).append(": ").append(value.value());
         }
         return sb.toString();
     }

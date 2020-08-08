@@ -67,14 +67,17 @@ public class ShortAnswerView extends View implements ProgressBar.DataSource {
     @Override
     public void view() {
         ProgressBar()
+                .setBarLength(60)
                 .setDataSource(this);
         Label(() -> questions.get(input.size()));
         TextField()
                 .addValidation((comm) -> validationList.get(input.size()).validate(comm))
                 .onFill((comm) -> {
                         input.add(comm);
-                        if (input.size() == questions.size())
+                        if (input.size() == questions.size()) {
                             onSuccess.onSuccess(input.toArray(String[]::new));
+                            input.clear();
+                        }
                     })
                 .setError(this::error);
     }

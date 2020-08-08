@@ -2,10 +2,11 @@ package mcli.test;
 
 import mcli.view.component.View;
 
-public class PageTwoView extends View {
+public class PolicyView extends View {
     @Override
     public void view() {
-        Label("Page Two!");
+        Label("Policy:");
+        Label("We are not responsible for .......");
         MultipleChoiceView()
                 .addQuestion("b","go back", this::back);
     }

@@ -8,8 +8,8 @@ public class HelloWorldView extends View {
         Label("Hello world!");
         Label("What's next?");
         MultipleChoiceView()
-                .addQuestion("1", "Page 2!", () -> redirect(new PageTwoView()))
-                .addQuestion("2", "Username and password", () -> redirect(new AccountView()))
+                .addQuestion("1", "View policy", () -> redirect(new PolicyView()))
+                .addQuestion("2", "Login", () -> redirect(new LoginView()))
                 .addQuestion("q", "quit", () -> System.exit(0));
     }
 }

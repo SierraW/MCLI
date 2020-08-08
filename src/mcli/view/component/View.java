@@ -1,6 +1,6 @@
 package mcli.view.component;
 
-import mcli.view.model.Describable;
+import mcli.view.model.Binding;
 import mcli.view.model.Function;
 import mcli.view.model.StateFunction;
 import mcli.view.views.MultipleChoiceView;
@@ -59,7 +59,7 @@ public abstract class View implements StateFunction {
         return (Label) addView(new Label(text));
     }
 
-    public Label Label(Describable stringBinding) {
+    public Label Label(Binding<String> stringBinding) {
         return (Label) addView(new Label(stringBinding));
     }
 
