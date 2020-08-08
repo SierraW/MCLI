@@ -1,11 +1,12 @@
-package mcli.view.views;
+package mcli.view.component;
 
 import mcli.view.model.Describable;
 import mcli.view.model.Function;
 import mcli.view.model.StateFunction;
+import mcli.view.views.MultipleChoiceView;
+import mcli.view.views.ShortAnswerView;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public abstract class View implements StateFunction {
 
@@ -66,16 +67,24 @@ public abstract class View implements StateFunction {
         return (MultipleChoiceView) addView(new MultipleChoiceView());
     }
 
-    public ShortAnswerView ShortAnswerView(ShortAnswerView.ShortAnswerOnSuccess onSuccess) {
-        return (ShortAnswerView) addView(new ShortAnswerView(onSuccess));
+    public ShortAnswerView ShortAnswerView() {
+        return (ShortAnswerView) addView(new ShortAnswerView());
     }
 
-    public TextField TextField(String validationRegEx, StateFunction onFill) {
-        return (TextField) addView(new TextField(validationRegEx, onFill));
+    public TextField TextField() {
+        return (TextField) addView(new TextField());
     }
 
-    public SelectionField SelectionField(SelectionField.Selections selections, StateFunction onSelect) {
-        return (SelectionField) addView(new SelectionField(selections, onSelect));
+    public Interceptor Interceptor(Function function) {
+        return (Interceptor) addView(new Interceptor(function));
+    }
+
+    public SelectionField SelectionField() {
+        return (SelectionField) addView(new SelectionField());
+    }
+
+    public ProgressBar ProgressBar() {
+        return (ProgressBar) addView(new ProgressBar());
     }
 
     public View View(View view) {

@@ -1,4 +1,4 @@
-package mcli.view.views;
+package mcli.view.component;
 
 import mcli.view.model.Describable;
 
@@ -23,7 +23,7 @@ public class Label extends View {
 
     @Override
     void show() {
-        if (describable != null)
+        if (describable != null && describable.describe() != null)
             System.out.println(describable.describe());
         if (text != null)
             System.out.println(text);

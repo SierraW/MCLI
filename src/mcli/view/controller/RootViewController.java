@@ -1,7 +1,7 @@
 package mcli.view.controller;
 
-import mcli.view.views.Environment;
-import mcli.view.views.View;
+import mcli.view.component.Environment;
+import mcli.view.component.View;
 
 import java.io.BufferedReader;
 import java.io.IOException;

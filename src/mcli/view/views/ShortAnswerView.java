@@ -1,69 +1,90 @@
 package mcli.view.views;
 
+import mcli.view.component.ProgressBar;
+import mcli.view.component.TextField;
+import mcli.view.component.View;
 import mcli.view.model.Function;
+import mcli.view.model.InputValidation;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class ShortAnswerView extends View {
+public class ShortAnswerView extends View implements ProgressBar.DataSource {
     private ShortAnswerOnSuccess onSuccess;
-    private ArrayList<String> questions = new ArrayList<>();
-    private ArrayList<String> validation = new ArrayList<>();
-    private ArrayList<String> input = new ArrayList<>();
-    private String error;
+    private final ArrayList<String> questions = new ArrayList<>();
+    private final ArrayList<InputValidation> validationList = new ArrayList<>();
+    private final ArrayList<String> input = new ArrayList<>();
+    private InputValidation error;
+    private boolean displayProgressBar = false;
+
+    @Override
+    public int getCurrent() {
+        return input.size();
+    }
+
+    @Override
+    public int getTotal() {
+        return questions.size();
+    }
+
+    @Override
+    public boolean enable() {
+        return displayProgressBar;
+    }
+
 
     public interface ShortAnswerOnSuccess {
         void onSuccess(String[] input);
     }
 
-    public ShortAnswerView(ShortAnswerOnSuccess onSuccess) {
-        this.onSuccess = onSuccess;
+    public ShortAnswerView onSuccess(ShortAnswerOnSuccess success) {
+        this.onSuccess = success;
+        return this;
+    }
+
+    public ShortAnswerView setError(InputValidation error) {
+        this.error = error;
+        return this;
     }
 
     public ShortAnswerView addQuestion(String question, String validationRegEx) {
         questions.add(question);
-        validation.add(validationRegEx);
+        validationList.add((comm) -> TextField.validate(comm, validationRegEx));
         return this;
     }
 
-    public ShortAnswerView setError(String error) {
-        this.error = error;
+    public ShortAnswerView addQuestion(String question, InputValidation validation) {
+        questions.add(question);
+        validationList.add(validation);
+        return this;
+    }
+
+    public ShortAnswerView showProgressBar(boolean displayProgressBar) {
+        this.displayProgressBar = displayProgressBar;
         return this;
     }
 
     @Override
     public void view() {
-
+        ProgressBar()
+                .setDataSource(this);
+        Label(() -> questions.get(input.size()));
+        TextField()
+                .addValidation((comm) -> validationList.get(input.size()).validate(comm))
+                .onFill((comm) -> {
+                        input.add(comm);
+                        if (input.size() == questions.size())
+                            onSuccess.onSuccess(input.toArray(String[]::new));
+                    })
+                .setError(this::error);
     }
 
-    @Override
-    public boolean read(String comm) {
-        if (!validate(comm, validation.get(input.size()))) {
-            if (error != null) {
-                System.out.println(error);
-                return true;
-            }
-            return false;
-        } else {
-            input.add(comm);
+    private boolean error(String comm) {
+        if (error!=null) {
+            error.validate(comm);
+            return true;
         }
-        if (input.size() == questions.size()) {
-            onSuccess.onSuccess(input.toArray(new String[0]));
-            input.clear();
-        }
-        return true;
+        return false;
     }
 
-    @Override
-    void show() {
-        System.out.println(questions.get(input.size()));
-    }
-
-    private boolean validate(String input, String regEx) {
-        if (input == null) {
-            return false;
-        }
-        Pattern pattern = Pattern.compile(regEx);
-        return pattern.matcher(input).matches();
-    }
 }

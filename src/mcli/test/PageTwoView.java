@@ -1,6 +1,6 @@
 package mcli.test;
 
-import mcli.view.views.View;
+import mcli.view.component.View;
 
 public class PageTwoView extends View {
     @Override

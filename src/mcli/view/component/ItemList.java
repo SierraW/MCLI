@@ -1,18 +1,14 @@
-package mcli.view.model;
+package mcli.view.component;
 
 import java.util.ArrayList;
 
-/**
- * this view give nice user interface when displaying long list of items. if number of T is bigger than 'displayedItemPerPage' value,
- * items will folded to multiple pages. follow by next page and previous page command.
- */
-public class ItemListView<T> {
+public class ItemList<T> {
     private final ArrayList<T> itemList;
     private final int displayedItemPerPage = 5;
     private int pageIndex = 0;
     private int currentCount = 0;
 
-    public ItemListView(ArrayList<T> itemList) {
+    public ItemList(ArrayList<T> itemList) {
         this.itemList = itemList;
     }
 
@@ -40,10 +36,11 @@ public class ItemListView<T> {
         return itemList.get(initialIndex + index - 1);
     }
 
-    public void prompt() {
+    public String prompt() {
+        StringBuilder sb = new StringBuilder();
         if (itemList.size() == 0) {
-            System.out.println("No results.");
-            return;
+            sb.append("No results.\n");
+            return sb.toString();
         }
         getDisplayItems();
         int totalPages = itemList.size() / displayedItemPerPage;
@@ -51,10 +48,11 @@ public class ItemListView<T> {
             totalPages++;
         }
         if (totalPages <= 1) {
-            System.out.printf("Displaying %d out of %d page.\n", pageIndex + 1, totalPages);
+            sb.append("Displaying ").append(pageIndex + 1).append(" out of ").append(totalPages).append(" page.\n");
         } else {
-            System.out.printf("Displaying %d out of %d pages.\n", pageIndex + 1, totalPages);
+            sb.append("Displaying ").append(pageIndex + 1).append(" out of ").append(totalPages).append(" pages.\n");
         }
+        return sb.toString();
     }
 
     public boolean isExistPreviousPage() {
