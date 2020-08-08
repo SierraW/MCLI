@@ -1,7 +1,7 @@
 package mcli.view.model;
 
-import mcli.view.controller.TraderViewController;
+import mcli.view.controller.ViewController;
 
 public interface LazyLoadController {
-    TraderViewController getController();   // initialize view controller.
+    ViewController getController();   // initialize view controller.
 }

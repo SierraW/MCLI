@@ -1,12 +1,12 @@
 package mcli.view.model;
 
-import mcli.view.controller.TraderViewController;
+import mcli.view.controller.ViewController;
 
 import java.util.HashMap;
 
 public class ControllerStateMap extends HashMap<String, StateFunction> {
     private final HashMap<String, LazyLoadController> lazyControllerHashMap = new HashMap<>(); // store "how to" init the controller
-    private TraderViewController currentController; // store current controller (LazyController Only)
+    private ViewController currentController; // store current controller (LazyController Only)
 
     private String currentState;
 

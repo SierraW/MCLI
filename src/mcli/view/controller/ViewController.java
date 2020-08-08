@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * Command line interface controller
  */
-public abstract class TraderViewController implements StateFunction {
+public abstract class ViewController implements StateFunction {
     public final ArrayList<String> input = new ArrayList<>();
     public final String STR_REGEX = "^[a-zA-Z0-9]{1,32}$";
     public final String STR_SPACE_REGEX = "^[a-zA-Z0-9 ]{1,32}$";
@@ -19,7 +19,7 @@ public abstract class TraderViewController implements StateFunction {
      * Constructor
      * @param onExit What to execute when this controller exit.
      */
-    public TraderViewController(Function onExit) {
+    public ViewController(Function onExit) {
         this.onExit = onExit;
     }
 

@@ -1,8 +1,8 @@
 package mcli.view.model;
 
-import mcli.view.controller.TraderViewController;
+import mcli.view.controller.ViewController;
 
-public class ItemListViewController<T> extends TraderViewController {
+public class ItemListViewController<T> extends ViewController {
 
     private final String HOME = "h";
     private final String SELECT = "s";

@@ -1,14 +1,14 @@
 package mcli.view.model;
 
-import mcli.view.controller.TraderViewController;
+import mcli.view.controller.ViewController;
 
 import java.util.ArrayList;
 
-public class ParamsBuilder implements TraderViewController.Builder {
+public class ParamsBuilder implements ViewController.Builder {
     ArrayList<String[]> params = new ArrayList<>();
 
     @Override
-    public TraderViewController.Builder addQuestion(String question, String regex) {
+    public ViewController.Builder addQuestion(String question, String regex) {
         params.add(new String[]{question, regex});
         return this;
     }
