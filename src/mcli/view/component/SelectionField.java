@@ -5,7 +5,7 @@ import mcli.view.model.StateFunction;
 
 import java.util.Set;
 
-public class SelectionField extends View{
+public class SelectionField extends Read{
 
     public interface DataSource {
         Set<String> getSelections();
@@ -20,11 +20,13 @@ public class SelectionField extends View{
         return this;
     }
 
+    @Override
     public SelectionField onFill(StateFunction onFill) {
         this.onFill = onFill;
         return this;
     }
 
+    @Override
     public SelectionField setError(InputValidation error) {
         this.error = error;
         return this;
@@ -41,9 +43,5 @@ public class SelectionField extends View{
             }
             return false;
         }
-    }
-
-    @Override
-    public void view() {
     }
 }

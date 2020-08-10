@@ -3,11 +3,10 @@ package mcli.view.views;
 import mcli.view.component.ProgressBar;
 import mcli.view.component.TextField;
 import mcli.view.component.View;
-import mcli.view.model.Function;
 import mcli.view.model.InputValidation;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
+
 
 public class ShortAnswerView extends View implements ProgressBar.DataSource {
     private ShortAnswerOnSuccess onSuccess;

@@ -22,7 +22,7 @@ public class Label extends View {
     }
 
     @Override
-    void show() {
+    public void print() {
         if (bindingString != null && bindingString.value() != null)
             System.out.println(bindingString.value());
         if (text != null)

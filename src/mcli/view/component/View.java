@@ -1,19 +1,26 @@
 package mcli.view.component;
 
+import mcli.view.controller.NavigationViewController;
 import mcli.view.model.Binding;
 import mcli.view.model.Function;
-import mcli.view.model.StateFunction;
 import mcli.view.views.MultipleChoiceView;
 import mcli.view.views.ShortAnswerView;
 
 import java.util.ArrayList;
 
-public abstract class View implements StateFunction {
+public abstract class View {
 
+    private NavigationViewController navigationViewController;
     private ArrayList<View> views = new ArrayList<>();
+    private ArrayList<Read> reads = new ArrayList<>();
 
     public View() {
         view();
+    }
+
+    public View setNavigationViewController(NavigationViewController controller) {
+        this.navigationViewController = controller;
+        return this;
     }
 
     public ArrayList<View> getViews() {
@@ -26,28 +33,24 @@ public abstract class View implements StateFunction {
 
     public abstract void view();
 
-    @Override
-    public void run(String comm) {
-        if (comm == null) {
-            Environment.viewStack.top().show();
-        } else {
-            Environment.viewStack.top().read(comm);
-        }
-    }
-
-    boolean read(String comm){
-        for(View view : views) {
-            if (view.read(comm)) {
+    public boolean read(String comm){ // todo separate
+        for(Read read : reads) {
+            if (read.read(comm)) {
                 return true;
             }
         }
         return false;
     }
 
-    void show() {
+    public void print() {
         for(View view : views) {
-            view.show();
+            view.print();
         }
+    }
+
+    private Read addRead(Read read) {
+        reads.add(read);
+        return read;
     }
 
     private View addView(View view) {
@@ -72,7 +75,7 @@ public abstract class View implements StateFunction {
     }
 
     public TextField TextField() {
-        return (TextField) addView(new TextField());
+        return (TextField) addRead(new TextField());
     }
 
     public Interceptor Interceptor(Function function) {
@@ -80,7 +83,7 @@ public abstract class View implements StateFunction {
     }
 
     public SelectionField SelectionField() {
-        return (SelectionField) addView(new SelectionField());
+        return (SelectionField) addRead(new SelectionField());
     }
 
     public ProgressBar ProgressBar() {
@@ -93,10 +96,10 @@ public abstract class View implements StateFunction {
     }
 
     public void redirect(View newView) {
-        Environment.viewStack.push(newView);
+        navigationViewController.redirect(newView);
     }
 
     public void back() {
-        Environment.viewStack.pop();
+        navigationViewController.back();
     }
 }

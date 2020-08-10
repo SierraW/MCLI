@@ -16,7 +16,7 @@ public class Interceptor extends View {
     }
 
     @Override
-    void show() {
+    public void print() {
         function.apply();
     }
 }
