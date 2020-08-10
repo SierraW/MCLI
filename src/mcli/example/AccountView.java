@@ -1,10 +1,12 @@
 package mcli.example;
 
-import mcli.view.component.View;
+import mcli.view.component.Label;
+import mcli.view.views.MultipleChoiceView;
+import mcli.view.views.View;
 
 public class AccountView extends View {
 
-    private String username;
+    private final String username;
 
     public AccountView(String username) {
         this.username = username;
@@ -12,9 +14,16 @@ public class AccountView extends View {
 
     @Override
     public void view() {
-        Label(this::getUsername);
-        MultipleChoiceView()
-                .addQuestion("b", "log out", this::back);
+        component(
+                Label.getBuilder()
+                .setText(this::getUsername)
+                .build()
+        );
+        component(
+                MultipleChoiceView.getBuilder()
+                        .addQuestion("b", "log out", this::back)
+                .build()
+        );
     }
 
     public String getUsername() {

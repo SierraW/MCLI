@@ -1,38 +1,37 @@
 package mcli.view.component;
 
-import mcli.view.model.InputValidation;
-import mcli.view.model.StateFunction;
+import mcli.view.model.InputLayer;
+import mcli.view.model.StringValidator;
+import mcli.view.model.CommandFunction;
 
 import java.util.regex.Pattern;
 
-public class TextField extends Read {
-    private StateFunction onFill;
-    private InputValidation validation;
-    private InputValidation error;
-    public final static String STR_REGEX = "^[a-zA-Z0-9]{1,32}$";
-    public final static String STR_SPACE_REGEX = "^[a-zA-Z0-9 ]{1,32}$";
+public class TextField implements InputLayer {
+    private final CommandFunction onFill;
+    private final StringValidator validator;
+    private final StringValidator error;
 
-    @Override
-    public TextField onFill(StateFunction onFill) {
+
+    TextField(CommandFunction onFill, StringValidator validator, StringValidator error) {
         this.onFill = onFill;
-        return this;
-    }
-
-
-    public TextField addValidation(InputValidation validation) {
-        this.validation = validation;
-        return this;
-    }
-
-    @Override
-    public TextField setError(InputValidation error) {
+        this.validator = validator;
         this.error = error;
-        return this;
+    }
+
+    public interface Builder {
+        Builder onFill(CommandFunction onFill);
+        Builder addValidator(StringValidator validator);
+        Builder setError(StringValidator error);
+        TextField build();
+    }
+
+    public static Builder getBuilder() {
+        return new TextFieldBuilder();
     }
 
     @Override
-    boolean read(String comm) {
-        if (validation == null || validation.validate(comm)) {
+    public boolean read(String comm) {
+        if (validator == null || validator.validate(comm)) {
             onFill.run(comm);
             return true;
         } else {

@@ -1,7 +1,9 @@
 package mcli.view.controller;
 
-import mcli.view.component.View;
-import mcli.view.component.ViewStack;
+import mcli.view.model.InputLayer;
+import mcli.view.model.TextLayer;
+import mcli.view.views.View;
+import mcli.view.model.ViewStack;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,23 +15,10 @@ public class NavigationViewController {
         viewStack = new ViewStack();
     }
 
-    public NavigationViewController setRootView(View rootView) {
+    public void setRootView(View rootView) {
         this.viewStack.clear();
         rootView.setNavigationViewController(this);
         this.viewStack.push(rootView);
-        return this;
-    }
-
-    public View top() {
-        return viewStack.top();
-    }
-
-    public void push(View view) {
-        viewStack.push(view);
-    }
-
-    public View pop() {
-        return viewStack.pop();
     }
 
     public void run(BufferedReader reader) {
@@ -46,14 +35,14 @@ public class NavigationViewController {
     }
 
     private void view(View view) {
-        for (View view1 : view.getViews()) {
-            view1.print();
+        for (TextLayer textLayer : view.getTextLayers()) {
+            textLayer.print();
         }
     }
 
     private void read(View view, String comm) {
-        for (View view1 : view.getViews()) {
-            view1.read(comm);
+        for (InputLayer inputLayer : view.getInputLayers()) {
+            inputLayer.read(comm);
         }
     }
 

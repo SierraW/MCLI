@@ -1,4 +1,6 @@
-package mcli.view.component;
+package mcli.view.views;
+
+import mcli.view.component.Label;
 
 public class ProgressBar extends View {
     public interface DataSource {
@@ -7,17 +9,22 @@ public class ProgressBar extends View {
         boolean enable();
     }
 
-    private int barLength = 120;
+    private int barLength;
     private DataSource dataSource;
 
-    public ProgressBar setDataSource(DataSource dataSource) {
+    ProgressBar(DataSource dataSource, int barLength) {
         this.dataSource = dataSource;
-        return this;
+        this.barLength = barLength;
     }
 
-    public ProgressBar setBarLength(int barLength) {
-        this.barLength = barLength;
-        return this;
+    public interface Builder {
+        Builder setDataSource(DataSource dataSource);
+        Builder setBarLength(int barLength);
+        ProgressBar build();
+    }
+
+    public static Builder getBuilder() {
+        return new ProgressBarBuilder();
     }
 
     private String getProgressBar(int current, int total, int barLength) {
@@ -44,11 +51,14 @@ public class ProgressBar extends View {
 
     @Override
     public void view() {
-        Label(() -> {
-            if (dataSource != null && dataSource.enable())
-                return getProgressBar(dataSource.getCurrent(), dataSource.getTotal(), barLength);
-            else
-                return null;
-        });
+        component(Label.getBuilder().setText(this::toString).build());
+    }
+
+    @Override
+    public String toString() {
+        if (dataSource != null && dataSource.enable())
+            return getProgressBar(dataSource.getCurrent(), dataSource.getTotal(), barLength);
+        else
+            return null;
     }
 }

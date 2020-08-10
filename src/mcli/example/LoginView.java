@@ -1,41 +1,28 @@
 package mcli.example;
 
 import mcli.view.component.TextField;
-import mcli.view.component.View;
+import mcli.view.views.MultipleChoiceView;
+import mcli.view.views.ShortAnswerView;
+import mcli.view.views.View;
 
 public class LoginView extends View {
-
-    private int count = 1;
-
+    private final String regExForString = "^[a-zA-Z0-9]{1,32}$";
     @Override
     public void view() {
-        MultipleChoiceView()
-                .addQuestion("b", "go back", this::back);
-        ShortAnswerView()
-                .addQuestion("Please enter your username (b to go back):", (comm) -> {
-                        count++;
-                        System.out.println(count);
-                        return TextField.validate(comm, TextField.STR_REGEX);
-                    })
-                .addQuestion("Please enter your password (b to go back):", TextField.STR_REGEX)
-                .onSuccess((input) -> redirect(new AccountView(input[0])))
-                .showProgressBar(true);
+        component(
+                MultipleChoiceView
+                .getBuilder()
+                        .addQuestion("b", "go back", this::back)
+                .build()
+        );
+        component(
+                ShortAnswerView
+                .getBuilder()
+                        .addQuestion("Please enter your username (b to go back):", (comm) -> TextField.validate(comm, regExForString))
+                        .addQuestion("Please enter your password (b to go back):", regExForString)
+                        .onSuccess((input) -> redirect(new AccountView(input[0])))
+                        .showProgressBar(true)
+                .build()
+        );
     }
-
-//    Generic approach
-//    @Override
-//    public void view() {
-//        View(new Label("Hello!"));
-//        ((MultipleChoiceView)View(new MultipleChoiceView()))
-//                .addQuestion("b", "go back", this::back);
-//        ((ShortAnswerView)View(new ShortAnswerView()))
-//                .addQuestion("Please enter your username (b to go back):", (comm) -> {
-//                        count++;
-//                        System.out.println(count);
-//                        return TextField.validate(comm, TextField.STR_REGEX);
-//                    })
-//                .addQuestion("Please enter your password (b to go back):", TextField.STR_REGEX)
-//                .onSuccess((input) -> redirect(new AccountView(input[0])))
-//                .showProgressBar(true);
-//    }
 }

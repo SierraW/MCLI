@@ -1,39 +1,40 @@
 package mcli.view.component;
 
-import mcli.view.model.InputValidation;
-import mcli.view.model.StateFunction;
+import mcli.view.model.InputLayer;
+import mcli.view.model.StringValidator;
+import mcli.view.model.CommandFunction;
 
 import java.util.Set;
 
-public class SelectionField extends Read{
+public class SelectionField implements InputLayer {
 
     public interface DataSource {
         Set<String> getSelections();
     }
 
-    private DataSource dataSource;
-    private StateFunction onFill;
-    private InputValidation error;
+    private final DataSource dataSource;
+    private final CommandFunction onFill;
+    private final StringValidator error;
 
-    public SelectionField setDataSource(DataSource dataSource) {
+    SelectionField(DataSource dataSource, CommandFunction onFill, StringValidator error) {
         this.dataSource = dataSource;
-        return this;
-    }
-
-    @Override
-    public SelectionField onFill(StateFunction onFill) {
         this.onFill = onFill;
-        return this;
-    }
-
-    @Override
-    public SelectionField setError(InputValidation error) {
         this.error = error;
-        return this;
+    }
+
+    public interface Builder {
+        Builder setDataSource(DataSource dataSource);
+        Builder onFill(CommandFunction onFill);
+        Builder setError(StringValidator error);
+        SelectionField build();
+    }
+
+    public static Builder getBuilder() {
+        return new SelectionFieldBuilder();
     }
 
     @Override
-    boolean read(String comm) {
+    public boolean read(String comm) {
         if (dataSource.getSelections().contains(comm)) {
             onFill.run(comm);
             return true;

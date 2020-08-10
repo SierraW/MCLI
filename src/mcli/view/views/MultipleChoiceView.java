@@ -1,52 +1,50 @@
 package mcli.view.views;
 
-import mcli.view.component.View;
+import mcli.view.component.Label;
+import mcli.view.component.SelectionField;
 import mcli.view.model.Binding;
 import mcli.view.model.DescribableFunction;
 import mcli.view.model.Function;
-import mcli.view.model.InputValidation;
+import mcli.view.model.StringValidator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MultipleChoiceView extends View {
-    private final ArrayList<String> keyList = new ArrayList<>();
-    private final HashMap<String, DescribableFunction> commandMap = new HashMap<>();
-    private InputValidation error;
+    private final List<String> keyList;
+    private final Map<String, DescribableFunction> commandMap;
+    private final StringValidator error;
 
-    public MultipleChoiceView setError(InputValidation error) {
+    MultipleChoiceView(List<String> keyList, Map<String, DescribableFunction> commandMap, StringValidator error) {
+        this.keyList = keyList;
+        this.commandMap = commandMap;
         this.error = error;
-        return this;
     }
 
-    public MultipleChoiceView addQuestion(String choice, String question, Function onSubmit) {
-        return addQuestion(choice, () -> question, onSubmit);
+    public interface Builder {
+        Builder setError(StringValidator error);
+
+        Builder addQuestion(String choice, String question, Function onSubmit);
+
+        Builder addQuestion(String choice, Binding<String> bindingString, Function onSubmit);
+
+        MultipleChoiceView build();
     }
 
-    public MultipleChoiceView addQuestion(String choice, Binding<String> bindingString, Function onSubmit) {
-        commandMap.put(choice, new DescribableFunction() {
-            @Override
-            public String value() {
-                return bindingString.value();
-            }
-
-            @Override
-            public void apply() {
-                onSubmit.apply();
-            }
-        });
-        keyList.add(choice);
-        return this;
+    public static Builder getBuilder() {
+        return new MultipleChoiceViewBuilder();
     }
 
     @Override
     public void view() {
-        Label(this::getPrompt);
-        SelectionField()
+        component(Label.getBuilder().setText(this::getPrompt).build());
+        component(SelectionField.getBuilder()
                 .setDataSource(this::getKeySet)
                 .onFill(this::command)
-                .setError(this::error);
+                .setError(this::error)
+                .build()
+        );
     }
 
     void command(String comm) {

@@ -1,5 +1,5 @@
 package mcli.view.model;
 
-public interface InputValidation {
+public interface StringValidator {
     boolean validate(String input);
 }

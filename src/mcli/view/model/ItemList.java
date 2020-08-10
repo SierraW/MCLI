@@ -1,4 +1,4 @@
-package mcli.view.component;
+package mcli.view.model;
 
 import java.util.ArrayList;
 

@@ -1,11 +1,15 @@
 package mcli.view.views;
 
-import mcli.view.component.View;
-import mcli.view.component.ItemList;
+import mcli.view.component.Label;
+import mcli.view.model.ItemList;
 
 public class ItemListView<T> extends View {
     private ItemList<T> itemList;
     private Integer selectedIndex;
+
+    public ItemListView(ItemList<T> itemList) {
+        this.itemList = itemList;
+    }
 
     public ItemList<T> getItemList() {
         return itemList;
@@ -23,8 +27,9 @@ public class ItemListView<T> extends View {
 
     @Override
     public void view() {
-        Label(itemList.prompt());
-        MultipleChoiceView()
+        component(Label.getBuilder().setText(itemList::prompt).build());
+        component(
+                MultipleChoiceView.getBuilder()
                 .addQuestion("<", () -> {
                     if (itemList.isExistPreviousPage()) {
                         return "Previous page.";
@@ -37,6 +42,8 @@ public class ItemListView<T> extends View {
                     }
                     return null;
                 }, itemList::nextPage)
-                .addQuestion("b", "go back", this::back);
+                .addQuestion("b", "go back", this::back)
+                .build()
+        );
     }
 }

@@ -1,24 +1,29 @@
 package mcli.view.component;
 
 import mcli.view.model.Binding;
+import mcli.view.model.TextLayer;
 
-public class Label extends View {
-
+public class Label implements TextLayer {
     private String text;
     private Binding<String> bindingString;
 
-    public Label(String text) {
+    Label(String text) {
         if (text != null)
             this.text = text;
     }
 
-    public Label(Binding<String> stringBinding) {
+    Label(Binding<String> stringBinding) {
         this.bindingString = stringBinding;
     }
 
-    @Override
-    public void view() {
+    public interface Builder {
+        Builder setText(String text);
+        Builder setText(Binding<String> text);
+        Label build();
+    }
 
+    public static Builder getBuilder() {
+        return new LabelBuilder();
     }
 
     @Override
