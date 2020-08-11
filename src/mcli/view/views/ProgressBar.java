@@ -15,6 +15,7 @@ public class ProgressBar extends View {
     ProgressBar(DataSource dataSource, int barLength) {
         this.dataSource = dataSource;
         this.barLength = barLength;
+        view();
     }
 
     public interface Builder {
@@ -57,8 +58,8 @@ public class ProgressBar extends View {
     @Override
     public String toString() {
         if (dataSource != null && dataSource.enable())
-            return getProgressBar(dataSource.getCurrent(), dataSource.getTotal(), barLength);
-        else
-            return null;
+            if (dataSource.getTotal() > 0 && dataSource.getCurrent() <= dataSource.getTotal())
+                return getProgressBar(dataSource.getCurrent(), dataSource.getTotal(), barLength);
+        return null;
     }
 }

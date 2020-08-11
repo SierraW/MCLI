@@ -2,17 +2,18 @@ package mcli.view.component;
 
 import mcli.view.model.Binding;
 import mcli.view.model.TextLayer;
+import mcli.view.views.View;
 
 public class Label implements TextLayer {
     private String text;
     private Binding<String> bindingString;
 
-    Label(String text) {
+    public Label(String text) {
         if (text != null)
             this.text = text;
     }
 
-    Label(Binding<String> stringBinding) {
+    public Label(Binding<String> stringBinding) {
         this.bindingString = stringBinding;
     }
 

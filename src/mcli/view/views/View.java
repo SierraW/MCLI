@@ -1,10 +1,8 @@
 package mcli.view.views;
 
-import mcli.view.component.Label;
-import mcli.view.component.SelectionField;
-import mcli.view.component.TextField;
 import mcli.view.controller.NavigationViewController;
 import mcli.view.model.Binding;
+import mcli.view.model.Function;
 import mcli.view.model.InputLayer;
 import mcli.view.model.TextLayer;
 
@@ -16,32 +14,28 @@ public abstract class View {
     private final ArrayList<TextLayer> textLayers = new ArrayList<>();
     private final ArrayList<InputLayer> inputLayers = new ArrayList<>();
 
-    public View() {
-        view();
-    }
-
     public void setNavigationViewController(NavigationViewController controller) {
         this.navigationViewController = controller;
     }
 
     public ArrayList<TextLayer> getTextLayers() {
+
         return textLayers;
     }
 
     public ArrayList<InputLayer> getInputLayers() {
+
         return inputLayers;
     }
 
     public abstract void view();
 
-    private InputLayer addInputLayer(InputLayer inputLayer) {
+    private void addInputLayer(InputLayer inputLayer) {
         inputLayers.add(inputLayer);
-        return inputLayer;
     }
 
-    private TextLayer addTextLayer(TextLayer textLayer) {
+    private void addTextLayer(TextLayer textLayer) {
         textLayers.add(textLayer);
-        return textLayer;
     }
 
     private boolean hasInputLayer() {
@@ -74,10 +68,16 @@ public abstract class View {
     }
 
     public void redirect(View newView) {
-        navigationViewController.redirect(newView);
+        if (navigationViewController != null)
+            navigationViewController.redirect(newView);
+        else
+            throw new NullPointerException("Attempting to redirect without having a navigation view controller.");
     }
 
     public void back() {
-        navigationViewController.back();
+        if (navigationViewController != null)
+            navigationViewController.back();
+        else
+            throw new NullPointerException("Attempting to go back without having a navigation view controller.");
     }
 }

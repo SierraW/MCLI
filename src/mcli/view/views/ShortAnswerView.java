@@ -23,6 +23,7 @@ public class ShortAnswerView extends View implements ProgressBar.DataSource {
         this.error =error;
         this.onSuccess = onSuccess;
         this.displayProgressBar = displayProgressBar;
+        view();
     }
 
     public interface Builder {

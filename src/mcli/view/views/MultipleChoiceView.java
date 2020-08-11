@@ -20,6 +20,7 @@ public class MultipleChoiceView extends View {
         this.keyList = keyList;
         this.commandMap = commandMap;
         this.error = error;
+        view();
     }
 
     public interface Builder {
@@ -69,13 +70,15 @@ public class MultipleChoiceView extends View {
         if (keyList != null)
             for (String key : keyList) {
                 DescribableFunction value = commandMap.get(key);
-                if (value.value() != null)
-                    if (isFirst) {
-                        sb.append(key).append(": ").append(value.value());
+                if (value.value() != null) {
+                    if (!isFirst) {
+                        sb.append("\n");
+                    } else {
                         isFirst = false;
-                    } else
-                        sb.append("\n").append(key).append(": ").append(value.value());
-        }
-        return sb.toString();
+                    }
+                    sb.append(key).append(": ").append(value.value());
+                }
+            }
+        return sb.toString().equals("") ? null : sb.toString();
     }
 }

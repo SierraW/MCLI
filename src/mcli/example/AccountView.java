@@ -1,32 +1,47 @@
 package mcli.example;
 
 import mcli.view.component.Label;
+import mcli.view.views.ItemListView;
 import mcli.view.views.MultipleChoiceView;
 import mcli.view.views.View;
 
-public class AccountView extends View {
+import java.util.ArrayList;
+import java.util.List;
 
+public class AccountView extends View {
     private final String username;
+    private final ArrayList<Integer> integers;
 
     public AccountView(String username) {
         this.username = username;
+
+        ArrayList<Integer> itemListView = new ArrayList<>();
+        for (int i = 0 ; i < 20; i ++) {
+            itemListView.add(i);
+        }
+        integers = itemListView;
+
     }
 
-    @Override
     public void view() {
         component(
                 Label.getBuilder()
-                .setText(this::getUsername)
+                .setText(username)
                 .build()
         );
         component(
                 MultipleChoiceView.getBuilder()
                         .addQuestion("b", "log out", this::back)
+                        .addQuestion("+", "add one number", this::addNumber)
                 .build()
+        );
+        component(
+                new ItemListView<>(integers, true)
         );
     }
 
-    public String getUsername() {
-        return "Hello! " + username;
+    public void addNumber() {
+        integers.add(7);
     }
+
 }

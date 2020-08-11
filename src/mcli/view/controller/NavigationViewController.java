@@ -1,5 +1,6 @@
 package mcli.view.controller;
 
+import mcli.view.model.Binding;
 import mcli.view.model.InputLayer;
 import mcli.view.model.TextLayer;
 import mcli.view.views.View;
@@ -17,8 +18,7 @@ public class NavigationViewController {
 
     public void setRootView(View rootView) {
         this.viewStack.clear();
-        rootView.setNavigationViewController(this);
-        this.viewStack.push(rootView);
+        redirect(rootView);
     }
 
     public void run(BufferedReader reader) {
@@ -47,6 +47,7 @@ public class NavigationViewController {
     }
 
     public void redirect(View newView) {
+        newView.view();
         newView.setNavigationViewController(this);
         viewStack.push(newView);
     }
