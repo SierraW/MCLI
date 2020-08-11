@@ -1,8 +1,6 @@
 package mcli.view.views;
 
 import mcli.view.controller.NavigationViewController;
-import mcli.view.model.Binding;
-import mcli.view.model.Function;
 import mcli.view.model.InputLayer;
 import mcli.view.model.TextLayer;
 

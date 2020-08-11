@@ -15,11 +15,13 @@ public class MultipleChoiceView extends View {
     private final List<String> keyList;
     private final Map<String, DescribableFunction> commandMap;
     private final StringValidator error;
+    private final boolean hideKey;
 
-    MultipleChoiceView(List<String> keyList, Map<String, DescribableFunction> commandMap, StringValidator error) {
+    MultipleChoiceView(List<String> keyList, Map<String, DescribableFunction> commandMap, StringValidator error, boolean hideKey) {
         this.keyList = keyList;
         this.commandMap = commandMap;
         this.error = error;
+        this.hideKey = hideKey;
         view();
     }
 
@@ -29,6 +31,8 @@ public class MultipleChoiceView extends View {
         Builder addQuestion(String choice, String question, Function onSubmit);
 
         Builder addQuestion(String choice, Binding<String> bindingString, Function onSubmit);
+
+        Builder hideKey(boolean hideKey);
 
         MultipleChoiceView build();
     }
@@ -76,7 +80,9 @@ public class MultipleChoiceView extends View {
                     } else {
                         isFirst = false;
                     }
-                    sb.append(key).append(": ").append(value.value());
+                    if (!hideKey)
+                        sb.append(key).append(": ");
+                    sb.append(value.value());
                 }
             }
         return sb.toString().equals("") ? null : sb.toString();

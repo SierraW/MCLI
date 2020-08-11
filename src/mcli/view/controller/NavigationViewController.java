@@ -1,6 +1,5 @@
 package mcli.view.controller;
 
-import mcli.view.model.Binding;
 import mcli.view.model.InputLayer;
 import mcli.view.model.TextLayer;
 import mcli.view.views.View;
@@ -42,7 +41,9 @@ public class NavigationViewController {
 
     private void read(View view, String comm) {
         for (InputLayer inputLayer : view.getInputLayers()) {
-            inputLayer.read(comm);
+            if (inputLayer.read(comm)) {
+                return;
+            }
         }
     }
 

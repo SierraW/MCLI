@@ -14,6 +14,7 @@ public class MultipleChoiceViewBuilder implements MultipleChoiceView.Builder {
     private final List<String> keyList = new ArrayList<>();
     private final Map<String, DescribableFunction> commandMap = new HashMap<>();
     private StringValidator error;
+    private boolean hideKey;
 
     @Override
     public MultipleChoiceViewBuilder setError(StringValidator error) {
@@ -44,8 +45,14 @@ public class MultipleChoiceViewBuilder implements MultipleChoiceView.Builder {
     }
 
     @Override
+    public MultipleChoiceView.Builder hideKey(boolean hideKey) {
+        this.hideKey = hideKey;
+        return this;
+    }
+
+    @Override
     public MultipleChoiceView build() {
         assert keyList.size() > 0;
-        return new MultipleChoiceView(keyList, commandMap, error);
+        return new MultipleChoiceView(keyList, commandMap, error, hideKey);
     }
 }

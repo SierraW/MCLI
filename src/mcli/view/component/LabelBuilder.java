@@ -1,6 +1,5 @@
 package mcli.view.component;
 
-import mcli.view.component.Label;
 import mcli.view.model.Binding;
 
 public class LabelBuilder implements Label.Builder {
