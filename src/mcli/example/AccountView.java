@@ -6,7 +6,6 @@ import mcli.view.views.MultipleChoiceView;
 import mcli.view.views.View;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AccountView extends View {
     private final String username;
@@ -27,15 +26,11 @@ public class AccountView extends View {
         component(
                 Label.getBuilder()
                 .setText(username)
-                .build()
-        );
-        component(
+                .build(),
                 MultipleChoiceView.getBuilder()
                         .addQuestion("b", "log out", this::back)
                         .addQuestion("+", "add one number", this::addNumber)
-                .build()
-        );
-        component(
+                .build(),
                 new ItemListView<>(integers, true)
         );
     }

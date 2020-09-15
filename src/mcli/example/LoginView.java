@@ -13,9 +13,7 @@ public class LoginView extends View {
                 MultipleChoiceView
                 .getBuilder()
                         .addQuestion("b", "go back", this::back)
-                .build()
-        );
-        component(
+                .build(),
                 ShortAnswerView
                 .getBuilder()
                         .addQuestion("Please enter your username (b to go back):", (comm) -> TextField.validate(comm, regExForString))

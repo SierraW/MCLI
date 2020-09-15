@@ -1,23 +1,36 @@
 package mcli.view.component;
 
+import mcli.view.model.Component;
 import mcli.view.model.InputLayer;
 import mcli.view.model.StringValidator;
 import mcli.view.model.CommandFunction;
 
 import java.util.regex.Pattern;
 
-public class TextField implements InputLayer {
+/**
+ * A class that implements InputLayer with text
+ */
+public class TextField extends InputLayer {
     private final CommandFunction onFill;
     private final StringValidator validator;
     private final StringValidator error;
 
 
+    /**
+     * the constructor of the class
+     * @param onFill CommandFunction
+     * @param validator StringValidator
+     * @param error StringValidator
+     */
     TextField(CommandFunction onFill, StringValidator validator, StringValidator error) {
         this.onFill = onFill;
         this.validator = validator;
         this.error = error;
     }
 
+    /**
+     * The interface of Builder Design Pattern
+     */
     public interface Builder {
         Builder onFill(CommandFunction onFill);
         Builder addValidator(StringValidator validator);
@@ -25,10 +38,19 @@ public class TextField implements InputLayer {
         TextField build();
     }
 
+    /**
+     * override to get the Builder
+     * @return the set Builder
+     */
     public static Builder getBuilder() {
         return new TextFieldBuilder();
     }
 
+    /**
+     * override the method to run the comm if validated
+     * @param comm String to run
+     * @return boolean
+     */
     @Override
     public boolean read(String comm) {
         if (validator == null || validator.validate(comm)) {
@@ -42,6 +64,12 @@ public class TextField implements InputLayer {
         }
     }
 
+    /**
+     * validate if the input matches the regEx
+     * @param input string to compart
+     * @param regEx string of the regular expression
+     * @return boolean
+     */
     public static boolean validate(String input, String regEx) {
         if (input == null) {
             return false;

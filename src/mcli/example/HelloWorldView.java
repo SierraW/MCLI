@@ -10,14 +10,10 @@ public class HelloWorldView extends View {
         component(
                 Label.getBuilder()
                 .setText("Hello world!")
-                .build()
-        );
-        component(
+                .build(),
                 Label.getBuilder()
                 .setText("What's next?")
-                .build()
-        );
-        component(
+                .build(),
                 MultipleChoiceView.getBuilder()
                         .addQuestion("1", "View policy", () -> redirect(new PolicyView()))
                         .addQuestion("2", "Login", () -> redirect(new LoginView()))

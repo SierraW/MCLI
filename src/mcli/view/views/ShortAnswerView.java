@@ -2,13 +2,14 @@ package mcli.view.views;
 
 import mcli.view.component.Label;
 import mcli.view.component.TextField;
-import mcli.view.model.Binding;
+import mcli.view.model.Component;
 import mcli.view.model.StringValidator;
 
-import javax.xml.validation.Validator;
 import java.util.ArrayList;
 
-
+/**
+ * The class that inherits View and implements ProgressBar.DataSource for the short answer view
+ */
 public class ShortAnswerView extends View implements ProgressBar.DataSource {
     private final ShortAnswerOnSuccess onSuccess;
     private final ArrayList<String> questions;
@@ -17,6 +18,14 @@ public class ShortAnswerView extends View implements ProgressBar.DataSource {
     private final StringValidator error;
     private final boolean displayProgressBar;
 
+    /**
+     * the constructor of the class
+     * @param questions ArrayList<String>
+     * @param validators ArrayList<StringValidator>
+     * @param error StringValidator
+     * @param onSuccess ShortAnswerOnSuccess
+     * @param displayProgressBar boolean
+     */
     ShortAnswerView(ArrayList<String> questions, ArrayList<StringValidator> validators, StringValidator error, ShortAnswerOnSuccess onSuccess, boolean displayProgressBar) {
         this.questions = questions;
         this.validators = validators;
@@ -26,6 +35,9 @@ public class ShortAnswerView extends View implements ProgressBar.DataSource {
         view();
     }
 
+    /**
+     * The interface to build for ShortAnswerView
+     */
     public interface Builder {
         Builder addQuestion(String question, String validationRegEx);
         Builder addQuestion(String question, StringValidator stringValidator);
@@ -35,30 +47,51 @@ public class ShortAnswerView extends View implements ProgressBar.DataSource {
         ShortAnswerView build();
     }
 
+    /**
+     * override to get the Builder
+     * @return the set Builder
+     */
     public static Builder getBuilder() {
         return new ShortAnswerViewBuilder();
     }
 
+    /**
+     * override to get the current input length
+     * @return int
+     */
     @Override
     public int getCurrent() {
         return input.size();
     }
 
+    /**
+     * override to get the total length
+     * @return int
+     */
     @Override
     public int getTotal() {
         return questions.size();
     }
 
+    /**
+     * override to enable
+     * @return boolean
+     */
     @Override
     public boolean enable() {
         return displayProgressBar;
     }
 
-
+    /**
+     * A interface with method onSuccess
+     */
     public interface ShortAnswerOnSuccess {
         void onSuccess(String[] input);
     }
 
+    /**
+     * override to view
+     */
     @Override
     public void view() {
         component(
@@ -81,22 +114,40 @@ public class ShortAnswerView extends View implements ProgressBar.DataSource {
         );
     }
 
+    /**
+     * get the corresponding question
+     * @return the question
+     */
     private String printQuestion() {
         return questions.get(input.size());
     }
 
+    /**
+     * validate the command
+     * @param comm string command
+     * @return the validator by the command
+     */
     private boolean validate(String comm) {
         return validators.get(input.size()).validate(comm);
     }
 
+    /**
+     * get the result
+     * @param result String command
+     */
     private void getResult(String result) {
         input.add(result);
         if (input.size() == questions.size()) {
-            onSuccess.onSuccess(input.toArray(String[]::new));
+            onSuccess.onSuccess(input.toArray(new String[0]));
             input.clear();
         }
     }
 
+    /**
+     * check if the error
+     * @param comm String command
+     * @return boolean
+     */
     private boolean error(String comm) {
         if (error!=null) {
             error.validate(comm);

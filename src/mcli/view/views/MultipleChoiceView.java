@@ -2,29 +2,39 @@ package mcli.view.views;
 
 import mcli.view.component.Label;
 import mcli.view.component.SelectionField;
-import mcli.view.model.Binding;
-import mcli.view.model.DescribableFunction;
-import mcli.view.model.Function;
-import mcli.view.model.StringValidator;
+import mcli.view.model.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The class that extends View to view with multiple choice answer
+ */
 public class MultipleChoiceView extends View {
     private final List<String> keyList;
     private final Map<String, DescribableFunction> commandMap;
     private final StringValidator error;
-    private final boolean hideKey;
+    private final boolean hideCommandKey;
 
-    MultipleChoiceView(List<String> keyList, Map<String, DescribableFunction> commandMap, StringValidator error, boolean hideKey) {
+    /**
+     * the constructor of the class
+     * @param keyList List<String>
+     * @param commandMap Map<String, DescribableFunction>
+     * @param error StringValidator
+     * @param hideCommandKey boolean
+     */
+    MultipleChoiceView(List<String> keyList, Map<String, DescribableFunction> commandMap, StringValidator error, boolean hideCommandKey) {
         this.keyList = keyList;
         this.commandMap = commandMap;
         this.error = error;
-        this.hideKey = hideKey;
+        this.hideCommandKey = hideCommandKey;
         view();
     }
 
+    /**
+     * The interface to build for MultipleChoiceView
+     */
     public interface Builder {
         Builder setError(StringValidator error);
 
@@ -32,30 +42,38 @@ public class MultipleChoiceView extends View {
 
         Builder addQuestion(String choice, Binding<String> bindingString, Function onSubmit);
 
-        Builder hideKey(boolean hideKey);
+        Builder hideKey(boolean hide);
 
         MultipleChoiceView build();
     }
 
+    /**
+     * override to get the Builder
+     * @return the set Builder
+     */
     public static Builder getBuilder() {
         return new MultipleChoiceViewBuilder();
     }
 
+    /**
+     * override to view
+     */
     @Override
     public void view() {
         component(Label.getBuilder().setText(this::getPrompt).build());
         component(SelectionField.getBuilder()
-                .setDataSource(this::getKeySet)
-                .onFill(this::command)
+                .setDataSource(commandMap::keySet)
+                .onFill(comm -> commandMap.get(comm).apply())
                 .setError(this::error)
                 .build()
         );
     }
 
-    void command(String comm) {
-        commandMap.get(comm).apply();
-    }
-
+    /**
+     * override to set the error
+     * @param comm string command
+     * @return boolean
+     */
     private boolean error(String comm) {
         if (error!=null) {
             error.validate(comm);
@@ -64,10 +82,10 @@ public class MultipleChoiceView extends View {
         return false;
     }
 
-    Set<String> getKeySet() {
-        return commandMap.keySet();
-    }
-
+    /**
+     * get StringBuilder() into string
+     * @return key set as string
+     */
     String getPrompt() {
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
@@ -80,8 +98,9 @@ public class MultipleChoiceView extends View {
                     } else {
                         isFirst = false;
                     }
-                    if (!hideKey)
+                    if (!hideCommandKey) {
                         sb.append(key).append(": ");
+                    }
                     sb.append(value.value());
                 }
             }

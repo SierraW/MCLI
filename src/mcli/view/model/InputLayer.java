@@ -1,7 +1,8 @@
 package mcli.view.model;
 
-public interface InputLayer {
-
-    boolean read(String comm);
-
+/**
+ * the interface with method read
+ */
+public abstract class InputLayer implements Component {
+    public abstract boolean read(String comm);
 }

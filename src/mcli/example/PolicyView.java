@@ -10,14 +10,10 @@ public class PolicyView extends View {
         component(
                 Label.getBuilder()
                         .setText("Policy:")
-                        .build()
-        );
-        component(
+                        .build(),
                 Label.getBuilder()
                         .setText("We are not responsible for.......")
-                        .build()
-        );
-        component(
+                        .build(),
                 MultipleChoiceView.getBuilder()
                         .addQuestion("b", "go back", this::back)
                         .build()

@@ -1,5 +1,8 @@
 package mcli.view.model;
 
-public interface TextLayer {
-    void print();
+/**
+ * the interface with method print
+ */
+public abstract class TextLayer implements Component {
+    public abstract void print();
 }

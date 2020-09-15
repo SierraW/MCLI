@@ -1,12 +1,15 @@
 package mcli.view.views;
 
 import mcli.view.component.Label;
-import mcli.view.views.MultipleChoiceView;
-import mcli.view.views.View;
+import mcli.view.model.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that inherits ProgressBar.DataSource and extends View to view the item list like read a book
+ * @param <T> object
+ */
 public class ItemListView<T> extends View implements ProgressBar.DataSource {
     private final List<T> itemList;
     private final int displayedItemPerPage = 5;
@@ -14,35 +17,56 @@ public class ItemListView<T> extends View implements ProgressBar.DataSource {
     private int currentCount = 0;
     private final boolean displayProgressBar;
 
-    public ItemListView(ArrayList<T> itemList) {
+    /**
+     * the constructor of the class
+     * @param itemList List<T>
+     */
+    public ItemListView(List<T> itemList) {
         this(itemList, false);
     }
 
-    public ItemListView(ArrayList<T> itemList, boolean displayProgressBar) {
+    /**
+     * the constructor of the class with boolean
+     * @param itemList List<T>
+     * @param displayProgressBar boolean
+     */
+    public ItemListView(List<T> itemList, boolean displayProgressBar) {
         this.itemList = itemList;
         this.displayProgressBar = displayProgressBar;
         view();
     }
 
+    /**
+     * override the method to get the current page
+     * @return index of current page
+     */
     @Override
     public int getCurrent() {
         return pageIndex;
     }
 
+    /**
+     * override the method to get the total page
+     * @return total page
+     */
     @Override
     public int getTotal() {
         return totalPage() - 1;
     }
 
+    /**
+     * override the method to enable
+     * @return boolean
+     */
     @Override
     public boolean enable() {
         return displayProgressBar;
     }
 
-    public interface DataSource<T> {
-        List<T> retrieve();
-    }
-
+    /**
+     * override the method to display the item
+     * @return item list
+     */
     private List<T> getDisplayItems() {
         int initialIndex = pageIndex * displayedItemPerPage;
         ArrayList<T> ts = new ArrayList<>();
@@ -56,22 +80,48 @@ public class ItemListView<T> extends View implements ProgressBar.DataSource {
         return ts;
     }
 
+    /**
+     * return the total page of the item list
+     * @return total page
+     */
     private int totalPage() {
         return itemList.size() / displayedItemPerPage;
     }
 
-    public boolean isContains(int index) {
+    /**
+     * check if index is in range
+     * @param index int to check
+     * @return boolean
+     */
+    public boolean contains(int index) {
         return index <= currentCount;
     }
 
+    /**
+     * check if item list is empty
+     * @return boolean
+     */
+    public boolean isEmpty() {
+        return itemList.isEmpty();
+    }
+
+    /**
+     * get item at page of index
+     * @param index page number
+     * @return item list
+     */
     public T getItem(int index) {
-        if (!isContains(index)) {
+        if (!contains(index)) {
             return null;
         }
         int initialIndex = pageIndex * displayedItemPerPage;
         return itemList.get(initialIndex + index - 1);
     }
 
+    /**
+     * prompt to display
+     * @return the set StringBuilder into string
+     */
     public String prompt() {
         StringBuilder sb = new StringBuilder();
         if (itemList.size() == 0) {
@@ -94,27 +144,44 @@ public class ItemListView<T> extends View implements ProgressBar.DataSource {
         return sb.toString();
     }
 
+    /**
+     * check if exist in the previous page
+     * @return boolean
+     */
     public boolean isExistPreviousPage() {
         return pageIndex > 0 && totalPage() >= 1;
     }
 
+    /**
+     * turn to the previous page
+     */
     public void previousPage() {
         if (isExistPreviousPage()) {
             pageIndex--;
         }
     }
 
+    /**
+     * check if exist in the next page
+     * @return boolean
+     */
     public boolean isExistNextPage() {
         int totalPages = (itemList.size() - 1) / displayedItemPerPage;
         return pageIndex < totalPages;
     }
 
+    /**
+     * turn to the next page
+     */
     public void nextPage() {
         if (isExistNextPage()) {
             pageIndex++;
         }
     }
 
+    /**
+     * override the method to View the item list with page
+     */
     @Override
     public void view() {
         component(

@@ -1,13 +1,20 @@
 package mcli.view.component;
 
+import mcli.view.model.Component;
 import mcli.view.model.InputLayer;
 import mcli.view.model.StringValidator;
 import mcli.view.model.CommandFunction;
 
 import java.util.Set;
 
-public class SelectionField implements InputLayer {
+/**
+ * A class that implements InputLayer about selection
+ */
+public class SelectionField extends InputLayer {
 
+    /**
+     * An interface with the method to get the Selections
+     */
     public interface DataSource {
         Set<String> getSelections();
     }
@@ -16,12 +23,21 @@ public class SelectionField implements InputLayer {
     private final CommandFunction onFill;
     private final StringValidator error;
 
+    /**
+     * the constructor of the class
+     * @param dataSource DataSource
+     * @param onFill CommandFunction
+     * @param error StringValidator
+     */
     SelectionField(DataSource dataSource, CommandFunction onFill, StringValidator error) {
         this.dataSource = dataSource;
         this.onFill = onFill;
         this.error = error;
     }
 
+    /**
+     * The interface of Builder Design Pattern
+     */
     public interface Builder {
         Builder setDataSource(DataSource dataSource);
         Builder onFill(CommandFunction onFill);
@@ -29,10 +45,19 @@ public class SelectionField implements InputLayer {
         SelectionField build();
     }
 
+    /**
+     * override to get the Builder
+     * @return the set Builder
+     */
     public static Builder getBuilder() {
         return new SelectionFieldBuilder();
     }
 
+    /**
+     * override to run if the string is contained
+     * @param comm string to see if contained in dataSource
+     * @return boolean
+     */
     @Override
     public boolean read(String comm) {
         if (dataSource.getSelections().contains(comm)) {
