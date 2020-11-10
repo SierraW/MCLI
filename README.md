@@ -15,11 +15,37 @@ public class Test {
     public static void main(String[] args) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         NavigationViewController navigationViewController = new NavigationViewController();
-        navigationViewController.setRootView(new YourRootView());
+        navigationViewController.setRootView(new HelloWorldView());
         navigationViewController.run(bufferedReader);
     }
 }
 ```
+//use label to display text
+```java
+import mcli.view.component.Label;
+import mcli.view.views.MultipleChoiceView;
+import mcli.view.views.View;
+
+public class HelloWorldView extends View {
+    @Override
+    public void view() {
+        component(
+                Label.getBuilder()
+                .setText("Hello world!")
+                .build(),
+                Label.getBuilder()
+                .setText("What's next?")
+                .build(),
+                MultipleChoiceView.getBuilder()
+                        .addQuestion("1", "View policy", () -> redirect(new PolicyView()))
+                        .addQuestion("2", "Login", () -> redirect(new LoginView()))
+                        .addQuestion("q", "quit", () -> System.exit(0))
+                .build()
+        );
+    }
+}
+```
+
 //only one view will display each time. view can take multiple output/ input by assigning components.
 ```java
 import mcli.view.component.TextField;
