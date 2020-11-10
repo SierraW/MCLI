@@ -6,6 +6,7 @@ Provide a quick and modern way to deploy a CLI.
 Example
 //setting up an navigation controller (you can call it router).
 
+```java
 import mcli.view.controller.NavigationViewController;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,9 +19,9 @@ public class Test {
         navigationViewController.run(bufferedReader);
     }
 }
-
+```
 //only one view will display each time. view can take multiple output/ input by assigning components.
-
+```java
 import mcli.view.component.TextField;
 import mcli.view.views.MultipleChoiceView;
 import mcli.view.views.ShortAnswerView;
@@ -41,7 +42,7 @@ public class LoginView extends View {
                         .addQuestion("Please enter your password (b to go back):", regExForString)
                         .onSuccess((input) -> {
                             if (true) { // validate info here, input is a string array, based on your question order.
-                              redirect(new AccountView(input[0]); // if success, redirect(example shows with username, however this is your choice.).
+                              redirect(new AccountView(input[0]); // if success, redirect.(example shows with username, however this is your choice.)
                             } else {
                               // after this, input array will clear and user will needs to start over.
                             }
@@ -51,9 +52,9 @@ public class LoginView extends View {
         );
     }
 }
-
+```
 // more components are avaliable at views folder.
-
+```java
 import mcli.view.component.Label;
 import mcli.view.views.ItemListView;
 import mcli.view.views.MultipleChoiceView;
@@ -94,3 +95,4 @@ public class AccountView extends View {
     }
 
 }
+```
