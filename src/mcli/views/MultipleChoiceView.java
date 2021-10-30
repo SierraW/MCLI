@@ -41,6 +41,8 @@ public class MultipleChoiceView extends View {
 
         Builder addQuestion(String choice, Binding<String> bindingString, Function onSubmit);
 
+        Builder setQuestions(List<String> keyList, Map<String, DescribableFunction> commandMap);
+
         Builder hideKey(boolean hide);
 
         MultipleChoiceView build();

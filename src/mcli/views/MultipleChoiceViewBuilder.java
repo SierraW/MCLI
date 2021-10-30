@@ -14,8 +14,8 @@ import java.util.Map;
  * A class implements the Builder interface of MultipleChoiceView
  */
 public class MultipleChoiceViewBuilder implements MultipleChoiceView.Builder {
-    private final List<String> keyList = new ArrayList<>();
-    private final Map<String, DescribableFunction> commandMap = new HashMap<>();
+    private List<String> keyList = new ArrayList<>();
+    private Map<String, DescribableFunction> commandMap = new HashMap<>();
     private StringValidator error;
     private boolean hideKey = false;
 
@@ -63,6 +63,13 @@ public class MultipleChoiceViewBuilder implements MultipleChoiceView.Builder {
             }
         });
         keyList.add(choice);
+        return this;
+    }
+
+    @Override
+    public MultipleChoiceView.Builder setQuestions(List<String> keyList, Map<String, DescribableFunction> commandMap) {
+        this.keyList = keyList;
+        this.commandMap = commandMap;
         return this;
     }
 
