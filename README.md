@@ -7,7 +7,7 @@ Example
 //setting up an navigation controller (you can call it router).
 
 ```java
-import mcli.view.controller.NavigationViewController;
+import mcli.controller.NavigationViewController;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -22,9 +22,9 @@ public class Test {
 ```
 //use label to display text
 ```java
-import mcli.view.component.Label;
-import mcli.view.views.MultipleChoiceView;
-import mcli.view.views.View;
+import mcli.component.Label;
+import mcli.views.MultipleChoiceView;
+import mcli.views.View;
 
 public class HelloWorldView extends View {
     @Override
@@ -48,10 +48,10 @@ public class HelloWorldView extends View {
 
 //only one view will display each time. view can take multiple output/ input by assigning components.
 ```java
-import mcli.view.component.TextField;
-import mcli.view.views.MultipleChoiceView;
-import mcli.view.views.ShortAnswerView;
-import mcli.view.views.View;
+import mcli.component.TextField;
+import mcli.views.MultipleChoiceView;
+import mcli.views.ShortAnswerView;
+import mcli.views.View;
 
 public class LoginView extends View {
     private final String regExForString = "^[a-zA-Z0-9]{1,32}$";
@@ -81,10 +81,10 @@ public class LoginView extends View {
 ```
 // more components are avaliable at views folder.
 ```java
-import mcli.view.component.Label;
-import mcli.view.views.ItemListView;
-import mcli.view.views.MultipleChoiceView;
-import mcli.view.views.View;
+import mcli.component.Label;
+import mcli.views.ItemListView;
+import mcli.views.MultipleChoiceView;
+import mcli.views.View;
 
 import java.util.ArrayList;
 
