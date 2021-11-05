@@ -9,11 +9,17 @@ import mcli.model.TextLayer;
 public class Label extends TextLayer {
     private String text;
     private Binding<String> bindingString;
+    private boolean nextLine = true;
 
     /**
      * constructor of the class with only one string
      * @param text string to label
      */
+
+    public Label() {
+        this.text = "";
+    }
+
     public Label(String text) {
         if (text != null)
             this.text = text;
@@ -33,7 +39,23 @@ public class Label extends TextLayer {
     public interface Builder {
         Builder setText(String text);
         Builder setText(Binding<String> text);
+        Builder nextLine(boolean ln);
         Label build();
+    }
+
+    public Label setText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public Label setBindingString(Binding<String> bindingString) {
+        this.bindingString = bindingString;
+        return this;
+    }
+
+    public Label setNextLine(boolean nextLine) {
+        this.nextLine = nextLine;
+        return this;
     }
 
     /**
@@ -49,9 +71,16 @@ public class Label extends TextLayer {
      */
     @Override
     public void print() {
+        String value;
         if (bindingString != null && bindingString.value() != null)
-            System.out.println(bindingString.value());
-        if (text != null)
-            System.out.println(text);
+            value = bindingString.value();
+        else if (text != null)
+            value = text;
+        else
+            return;
+        if (nextLine)
+            System.out.println(value);
+        else
+            System.out.print(value);
     }
 }

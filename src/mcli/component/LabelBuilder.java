@@ -15,7 +15,7 @@ public class LabelBuilder implements Label.Builder {
      */
     @Override
     public Label.Builder setText(String text) {
-        label = new Label(text);
+        label.setText(text);
         return this;
     }
 
@@ -26,7 +26,13 @@ public class LabelBuilder implements Label.Builder {
      */
     @Override
     public Label.Builder setText(Binding<String> text) {
-        label = new Label(text);
+        label.setBindingString(text);
+        return this;
+    }
+
+    @Override
+    public Label.Builder nextLine(boolean ln) {
+        label.setNextLine(ln);
         return this;
     }
 

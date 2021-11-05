@@ -18,7 +18,10 @@ public class HelloWorldView extends View {
                         .addQuestion("1", "View policy", () -> redirect(new PolicyView()))
                         .addQuestion("2", "Login", () -> redirect(new LoginView()))
                         .addQuestion("q", "quit", () -> System.exit(0))
-                .build()
+                .build(),
+                new Label()
+                        .setText("example> ")
+                        .setNextLine(false)
         );
     }
 }
